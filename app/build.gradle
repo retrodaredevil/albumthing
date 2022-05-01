@@ -1,0 +1,38 @@
+buildscript {
+    ext {
+        // https://github.com/spring-projects/spring-boot/wiki#release-notes
+        springBootVersion = '2.6.2'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+apply plugin: "kotlin"
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+
+version = '0.0.1-SNAPSHOT'
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    // https://mvnrepository.com/artifact/com.graphql-java/graphql-java-spring-boot-starter-webmvc
+    implementation 'com.graphql-java:graphql-java-spring-boot-starter-webmvc:2.0'
+
+//    implementation 'com.graphql-java:graphql-java:14.0' graphql-spqr adds this dependency
+    // https://github.com/leangen/graphql-spqr/releases
+    implementation 'io.leangen.graphql:spqr:0.11.2'
+
+    implementation project(":core")
+    runtimeOnly project(":client")
+}
+task copyWebApp(type: Copy) {
+    from "$rootDir/client/build"
+    into "$rootDir/app/build/resources/main/static/."
+}
+copyWebApp.dependsOn(":client:build")
+bootJar.dependsOn(copyWebApp)
+bootRun.dependsOn(copyWebApp)

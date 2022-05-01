@@ -1,0 +1,4 @@
+rootProject.name = 'albumthing'
+include 'app'
+include 'client'
+include 'core'
