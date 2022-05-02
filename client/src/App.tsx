@@ -19,13 +19,9 @@ function App() {
             <Link to={"/about"}>About</Link>
           </p>
           <Routes>
-            {/*<Route path='/' element={<Home/>}/>*/}
-            <Route path='/' element={<Home/>}>
-              <Route path='about' element={<About/>}/>
-              <Route path="artist">
-                <Route path=":youtubeId" element={<Artist />} />
-              </Route>
-            </Route>
+            <Route path='/' element={<Home/>}/>
+            <Route path='/about' element={<About/>}/>
+            <Route path="/artist/:youtubeId" element={<Artist />} />
           </Routes>
         </header>
       </div>

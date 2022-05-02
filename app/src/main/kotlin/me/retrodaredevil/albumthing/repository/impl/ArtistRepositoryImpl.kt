@@ -3,7 +3,9 @@ package me.retrodaredevil.albumthing.repository.impl
 import me.retrodaredevil.albumthing.model.Album
 import me.retrodaredevil.albumthing.model.Artist
 import me.retrodaredevil.albumthing.repository.ArtistRepository
+import me.retrodaredevil.albumthing.view.AlbumView
 import me.retrodaredevil.albumthing.view.ArtistView
+import me.retrodaredevil.albumthing.view.BigArtistView
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Service
 
@@ -56,4 +58,39 @@ class ArtistRepositoryImpl(
             ArtistView(artist, albumCount, firstAlbum, latestAlbum)
         }
     }
+
+    override fun queryArtist(youtubeId: String): BigArtistView {
+        val sql = """
+            SELECT artist.youtube_id, artist.name as artist_name, 
+                album.youtube_playlist_id, album.name as album_name, album.release_year
+            FROM artist
+            LEFT JOIN album
+            ON artist.youtube_id = album.artist_youtube_id
+            WHERE artist.youtube_id = ?
+            ORDER BY album.release_year
+        """.trimIndent()
+        val data = jdbcTemplate.query(sql, { rs, _ ->
+            val albumName: String? = rs.getString("album_name")
+            IntermediateAlbum(
+                    Artist(rs.getString("youtube_id"), rs.getString("artist_name")),
+                    if(albumName == null) null else Album(rs.getString("youtube_playlist_id"), rs.getString("youtube_id"), albumName, rs.getInt("release_year"))
+            )
+        }, youtubeId)
+        if (data.size == 0) {
+            throw NoSuchElementException("Could not find artist: $youtubeId")
+        }
+        val artist = data[0].artist
+        val albumViews = mutableListOf<AlbumView>()
+        for (album in data) {
+            if (album.album != null) {
+                albumViews.add(AlbumView(album.album))
+            }
+        }
+        return BigArtistView(artist, albumViews)
+    }
+
+    private data class IntermediateAlbum(
+            val artist: Artist,
+            val album: Album?
+    )
 }

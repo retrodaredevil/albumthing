@@ -39,21 +39,29 @@ export function useListArtists() {
   });
 }
 
-export function useGetPost(postId: string) {
-  return useQuery(["get-post", postId], async () => {
-    const { getPost } = await graphQLClient.request(
+export function useQueryArtist(youtubeId: string) {
+  return useQuery(["query-artist", youtubeId], async () => {
+    const { queryArtist } = await graphQLClient.request(
       gql`
-        query getPost($postId: ID!) {
-          getPost(_id: $postId) {
-            _id
-            content
-            description
-            title
+        query queryArtist($youtubeId: String!) {
+          queryArtist(youtubeId: $youtubeId) {
+            artist {
+              youtubeId
+              name
+            }
+            albumViews {
+              album {
+                name
+                youtubePlaylistId
+                artistYoutubeId
+                releaseYear
+              }
+            }
           }
         }
       `,
-      { postId }
+      { youtubeId }
     );
-    return getPost;
+    return queryArtist;
   });
 }

@@ -8,6 +8,7 @@ import me.retrodaredevil.albumthing.model.Artist
 import me.retrodaredevil.albumthing.repository.AlbumRepository
 import me.retrodaredevil.albumthing.repository.ArtistRepository
 import me.retrodaredevil.albumthing.view.ArtistView
+import me.retrodaredevil.albumthing.view.BigArtistView
 
 class SimpleGraphQLService(
         private val artistRepository: ArtistRepository,
@@ -21,24 +22,11 @@ class SimpleGraphQLService(
     @GraphQLQuery
     fun listArtists(): List<ArtistView> {
         return artistRepository.listArtists()
-//        return listOf(
-//                ArtistView(
-//                        Artist(TestConstants.CHANNEL_ID_AVANTASIA, "Avantasia"),
-//                        10,
-//                        Album(
-//                                TestConstants.PLAYLIST_ID_AVANTASIA_THE_METAL_OPERA_PT_1,
-//                                TestConstants.CHANNEL_ID_AVANTASIA,
-//                                "The Metal Opera Pt. I",
-//                                2001
-//                        ),
-//                        Album(
-//                                TestConstants.PLAYLIST_ID_AVANTASIA_MOONGLOW,
-//                                TestConstants.CHANNEL_ID_AVANTASIA,
-//                                "Moonglow",
-//                                2019
-//                        ),
-//                )
-//        )
+    }
+
+    @GraphQLQuery
+    fun queryArtist(youtubeId: String): BigArtistView {
+        return artistRepository.queryArtist(youtubeId)
     }
 
 
