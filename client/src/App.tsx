@@ -1,36 +1,29 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { useListArtists } from "./useRequest";
+import {BrowserRouter as Router, Link, Route, Routes} from 'react-router-dom';
+import Home from "./pages/Home";
+import Artist from "./pages/Artist";
 
 function App() {
-  const { data, error, isLoading, isSuccess } = useListArtists();
-
-  if (error) return <h1>Something went wrong!</h1>;
-  if (isLoading) return <h1>Loading...</h1>;
+  // Tutorial followed for routing: https://blog.logrocket.com/react-router-v6/
   return (
     <div className="App">
       <header className="App-header">
-        {/*<img src={logo} className="App-logo" alt="logo" />*/}
         <p>
-          AlbumThing made by Joshua Shannon
+          {/*<Link to={"/"}>*/}
+            AlbumThing made by Joshua Shannon
+          {/*</Link>*/}
         </p>
-        <table style={{width: "1500px"}}>
-          <tr>
-            <th style={{width:"40%"}}>Artist</th>
-            <th style={{width:"20%"}}>Album Count</th>
-            <th style={{width:"20%"}}></th>
-            <th style={{width:"20%"}}></th>
-          </tr>
-          {isSuccess && data.map((artistView: any) => <>
-            <tr>
-              <th>{artistView.artist.name}</th>
-              <th>{artistView.artist.name}</th>
-              <th>{artistView.artist.name}</th>
-              <th>{artistView.artist.name}</th>
-            </tr>
-          </>)}
-        </table>
+        <Router>
+          <Routes>
+            {/*<Route path='/' element={<Home/>}/>*/}
+            <Route path='/' element={<Home/>}>
+              <Route path="artist"> {/* TODO don't use Home here?*/}
+                <Route path=":youtubeId" element={<Artist />} />
+              </Route>
+            </Route>
+          </Routes>
+        </Router>
       </header>
     </div>
   );

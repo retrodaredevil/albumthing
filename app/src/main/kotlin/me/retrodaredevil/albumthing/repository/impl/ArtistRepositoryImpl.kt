@@ -21,7 +21,7 @@ class ArtistRepositoryImpl(
                 first_album.youtube_playlist_id as first_youtube_playlist_id, first_album.name as first_name, first_album.release_year as first_release_year,
                 latest_album.youtube_playlist_id as latest_youtube_playlist_id, latest_album.name as latest_name, latest_album.release_year as latest_release_year
             FROM artist AS artist
-            LEFT JOIN (SELECT COUNT(*) AS album_count, artist_youtube_id FROM album GROUP BY youtube_playlist_id) as album_count
+            LEFT JOIN (SELECT COUNT(*) AS album_count, artist_youtube_id FROM album GROUP BY artist_youtube_id) as album_count
             ON artist.youtube_id = album_count.artist_youtube_id
             LEFT JOIN album as first_album
             ON artist.youtube_id = first_album.artist_youtube_id 
