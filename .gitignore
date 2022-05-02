@@ -2,7 +2,7 @@
 *.attach_pid*
 .~lock*
 *.log.gz
-.idea/
+db-data/
 
 # Created by https://www.toptal.com/developers/gitignore/api/java,linux,macos,gradle,kotlin,windows,intellij,react,node,yarn
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,linux,macos,gradle,kotlin,windows,intellij,react,node,yarn
@@ -389,3 +389,9 @@ gradle-app.setting
 **/build/
 
 # End of https://www.toptal.com/developers/gitignore/api/java,linux,macos,gradle,kotlin,windows,intellij,react,node,yarn
+
+*.iml
+/.idea/*
+!/.idea/sqldialects.xml
+!/.idea/dictionaries
+!/.idea/inspectionProfiles

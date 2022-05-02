@@ -6,6 +6,7 @@ import io.leangen.graphql.GraphQLSchemaGenerator
 import io.leangen.graphql.metadata.strategy.query.AnnotatedResolverBuilder
 import io.leangen.graphql.metadata.strategy.query.ResolverBuilder
 import io.leangen.graphql.metadata.strategy.value.jackson.JacksonValueMapperFactory
+import me.retrodaredevil.albumthing.repository.ArtistRepository
 import me.retrodaredevil.albumthing.service.SimpleGraphQLService
 import org.springframework.context.annotation.Bean
 import org.springframework.stereotype.Component
@@ -13,7 +14,10 @@ import java.time.ZoneId
 import javax.annotation.PostConstruct
 
 @Component
-class GraphQLProvider {
+class GraphQLProvider(
+//        private val jdbcTemplate: NamedParameterJdbcTemplate
+        private val artistRepository: ArtistRepository
+) {
     private lateinit var graphQL: GraphQL
 
     @PostConstruct
@@ -29,7 +33,7 @@ class GraphQLProvider {
 
         val schemaGenerator = GraphQLSchemaGenerator()
                 .withBasePackages("me.retrodaredevil.albumthing")
-                .withOperationsFromSingleton(SimpleGraphQLService())
+                .withOperationsFromSingleton(SimpleGraphQLService(artistRepository))
                 .withValueMapperFactory(jacksonValueMapperFactory)
                 .withResolverBuilders(resolverBuilder)
 

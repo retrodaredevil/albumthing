@@ -1,7 +1,7 @@
 buildscript {
     ext {
         // https://github.com/spring-projects/spring-boot/wiki#release-notes
-        springBootVersion = '2.6.2'
+        springBootVersion = '2.6.7'
     }
     repositories {
         mavenCentral()
@@ -21,6 +21,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     // https://mvnrepository.com/artifact/com.graphql-java/graphql-java-spring-boot-starter-webmvc
     implementation 'com.graphql-java:graphql-java-spring-boot-starter-webmvc:2.0'
+
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jdbc
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jdbc'
+    implementation group: 'org.postgresql', name: 'postgresql'
+//    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
 
 //    implementation 'com.graphql-java:graphql-java:14.0' graphql-spqr adds this dependency
     // https://github.com/leangen/graphql-spqr/releases
