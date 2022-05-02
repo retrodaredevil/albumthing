@@ -18,24 +18,25 @@ class SimpleGraphQLService(
     }
     @GraphQLQuery
     fun listArtists(): List<ArtistView> {
-        return listOf(
-                ArtistView(
-                        Artist(TestConstants.CHANNEL_ID_AVANTASIA, "Avantasia"),
-                        10,
-                        Album(
-                                TestConstants.PLAYLIST_ID_AVANTASIA_THE_METAL_OPERA_PT_1,
-                                TestConstants.CHANNEL_ID_AVANTASIA,
-                                "The Metal Opera Pt. I",
-                                2001
-                        ),
-                        Album(
-                                TestConstants.PLAYLIST_ID_AVANTASIA_MOONGLOW,
-                                TestConstants.CHANNEL_ID_AVANTASIA,
-                                "Moonglow",
-                                2019
-                        ),
-                )
-        )
+        return artistRepository.listArtists()
+//        return listOf(
+//                ArtistView(
+//                        Artist(TestConstants.CHANNEL_ID_AVANTASIA, "Avantasia"),
+//                        10,
+//                        Album(
+//                                TestConstants.PLAYLIST_ID_AVANTASIA_THE_METAL_OPERA_PT_1,
+//                                TestConstants.CHANNEL_ID_AVANTASIA,
+//                                "The Metal Opera Pt. I",
+//                                2001
+//                        ),
+//                        Album(
+//                                TestConstants.PLAYLIST_ID_AVANTASIA_MOONGLOW,
+//                                TestConstants.CHANNEL_ID_AVANTASIA,
+//                                "Moonglow",
+//                                2019
+//                        ),
+//                )
+//        )
     }
 
 

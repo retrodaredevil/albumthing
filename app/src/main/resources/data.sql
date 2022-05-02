@@ -1,5 +1,6 @@
 -- This file will run once after schema.sql is ran
 
+-- thanks https://stackoverflow.com/questions/55596620/unterminated-dollar-quote#55596701
 DO
 '
 DECLARE
