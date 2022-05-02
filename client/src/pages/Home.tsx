@@ -1,11 +1,11 @@
 import {useListArtists} from "../useRequest";
 import React from "react";
-import {Link} from "react-router-dom";
+import {Link } from "react-router-dom";
 
 function Home() {
   const { data, error, isLoading, isSuccess } = useListArtists();
 
-  if (error) return <h1>Something went wrong!</h1>;
+  if (error) return <h1><Link to={"/artist/hi"}>Something went wrong!</Link></h1>;
   console.log(data);
   return (
     <div className="App">
