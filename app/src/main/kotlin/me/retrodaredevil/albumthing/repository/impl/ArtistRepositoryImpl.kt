@@ -16,10 +16,16 @@ class ArtistRepositoryImpl(
     }
 
     override fun listArtists(): List<ArtistView> {
-        return jdbcTemplate.query("SELECT artist.youtube_id, artist.name from artist AS artist", { rs, _ ->
+        val sql = """
+            SELECT artist.youtube_id, artist.name, album_count.album_count
+            FROM artist AS artist
+            LEFT JOIN (SELECT COUNT(*) AS album_count, artist_youtube_id FROM album GROUP BY youtube_playlist_id) as album_count
+            ON artist.youtube_id = album_count.artist_youtube_id
+        """.trimIndent()
+        return jdbcTemplate.query(sql) { rs, _ ->
             val artist = Artist(rs.getString("youtube_id"), rs.getString("name"))
 
-            ArtistView(artist, 0, null, null)
-        })
+            ArtistView(artist, rs.getInt("album_count"), null, null)
+        }
     }
 }
