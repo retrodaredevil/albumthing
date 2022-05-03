@@ -1,0 +1,28 @@
+query queryAlbum($playlistId: String!) {
+  queryAlbum(playlistId:$playlistId) {
+    album {
+      youtubePlaylistId
+      name
+      artistYoutubeId
+      releaseYear
+    }
+    artist {
+      youtubeId
+      name
+    }
+    downloadRecordViews {
+      downloadRecord {
+    	startTime
+    	youtubePlaylistId
+    	endTime
+    	backgroundProcessId
+    	downloadLocationSubpath
+    	downloadLocationFilePath
+      }
+      downloadLocation {
+    	displayName
+    	filePath
+      }
+    }
+  }
+}

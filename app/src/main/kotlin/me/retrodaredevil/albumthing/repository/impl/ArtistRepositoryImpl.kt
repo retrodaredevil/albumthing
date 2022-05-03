@@ -3,7 +3,7 @@ package me.retrodaredevil.albumthing.repository.impl
 import me.retrodaredevil.albumthing.model.Album
 import me.retrodaredevil.albumthing.model.Artist
 import me.retrodaredevil.albumthing.repository.ArtistRepository
-import me.retrodaredevil.albumthing.view.AlbumView
+import me.retrodaredevil.albumthing.view.NestedAlbumView
 import me.retrodaredevil.albumthing.view.ArtistView
 import me.retrodaredevil.albumthing.view.BigArtistView
 import org.springframework.jdbc.core.JdbcTemplate
@@ -80,10 +80,10 @@ class ArtistRepositoryImpl(
             throw NoSuchElementException("Could not find artist: $youtubeId")
         }
         val artist = data[0].artist
-        val albumViews = mutableListOf<AlbumView>()
+        val albumViews = mutableListOf<NestedAlbumView>()
         for (album in data) {
             if (album.album != null) {
-                albumViews.add(AlbumView(album.album))
+                albumViews.add(NestedAlbumView(album.album))
             }
         }
         return BigArtistView(artist, albumViews)

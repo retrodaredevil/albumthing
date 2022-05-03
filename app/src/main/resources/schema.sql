@@ -39,5 +39,7 @@ CREATE TABLE IF NOT EXISTS download_record(
     youtube_playlist_id VARCHAR(128) REFERENCES album(youtube_playlist_id) NOT NULL,
     end_time TIMESTAMP DEFAULT NULL,
     background_process_id INT NOT NULL,
+    download_location_file_path VARCHAR REFERENCES download_location(file_path),
     download_location_subpath VARCHAR NOT NULL
 );
+-- ALTER TABLE download_record ADD download_location_file_path VARCHAR REFERENCES download_location(file_path);

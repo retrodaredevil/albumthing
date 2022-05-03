@@ -17,6 +17,8 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** Built-in scalar representing an instant in time */
+  Instant: any;
   /** Use SPQR's SchemaPrinter to remove this from SDL */
   UNREPRESENTABLE: any;
 };
@@ -27,11 +29,6 @@ export type Album = {
   name: Scalars['String'];
   releaseYear: Scalars['Int'];
   youtubePlaylistId: Scalars['String'];
-};
-
-export type AlbumView = {
-  __typename?: 'AlbumView';
-  album: Album;
 };
 
 export type Artist = {
@@ -48,9 +45,16 @@ export type ArtistView = {
   latestAlbum?: Maybe<Album>;
 };
 
+export type BigAlbumView = {
+  __typename?: 'BigAlbumView';
+  album: Album;
+  artist: Artist;
+  downloadRecordViews: Array<DownloadRecordView>;
+};
+
 export type BigArtistView = {
   __typename?: 'BigArtistView';
-  albumViews: Array<AlbumView>;
+  albumViews: Array<NestedAlbumView>;
   artist: Artist;
 };
 
@@ -66,6 +70,22 @@ export type DownloadLocationView = {
   downloadLocations: Array<DownloadLocation>;
 };
 
+export type DownloadRecord = {
+  __typename?: 'DownloadRecord';
+  backgroundProcessId: Scalars['Int'];
+  downloadLocationFilePath: Scalars['String'];
+  downloadLocationSubpath: Scalars['String'];
+  endTime?: Maybe<Scalars['Instant']>;
+  startTime: Scalars['Instant'];
+  youtubePlaylistId: Scalars['String'];
+};
+
+export type DownloadRecordView = {
+  __typename?: 'DownloadRecordView';
+  downloadLocation: DownloadLocation;
+  downloadRecord: DownloadRecord;
+};
+
 /** Mutation root */
 export type Mutation = {
   __typename?: 'Mutation';
@@ -74,6 +94,7 @@ export type Mutation = {
   addDownloadLocation: Scalars['Boolean'];
   deleteDownloadLocation: Scalars['Boolean'];
   setDefaultDownloadLocation: Scalars['Boolean'];
+  startDownload: Scalars['Boolean'];
   updateDisplayName: Scalars['Boolean'];
 };
 
@@ -114,18 +135,37 @@ export type MutationSetDefaultDownloadLocationArgs = {
 
 
 /** Mutation root */
+export type MutationStartDownloadArgs = {
+  downloadLocationFilePath?: InputMaybe<Scalars['String']>;
+  playlistId?: InputMaybe<Scalars['String']>;
+};
+
+
+/** Mutation root */
 export type MutationUpdateDisplayNameArgs = {
   displayName?: InputMaybe<Scalars['String']>;
   filePath?: InputMaybe<Scalars['String']>;
+};
+
+export type NestedAlbumView = {
+  __typename?: 'NestedAlbumView';
+  album: Album;
 };
 
 /** Query root */
 export type Query = {
   __typename?: 'Query';
   listArtists?: Maybe<Array<Maybe<ArtistView>>>;
+  queryAlbum?: Maybe<BigAlbumView>;
   queryArtist?: Maybe<BigArtistView>;
   queryDownloadLocations?: Maybe<DownloadLocationView>;
   queryMilli: Scalars['Int'];
+};
+
+
+/** Query root */
+export type QueryQueryAlbumArgs = {
+  playlistId?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -172,12 +212,19 @@ export type ListArtistsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type ListArtistsQuery = { __typename?: 'Query', listArtists?: Array<{ __typename?: 'ArtistView', albumCount: number, artist: { __typename?: 'Artist', youtubeId: string, name: string }, firstAlbum?: { __typename?: 'Album', name: string, youtubePlaylistId: string, artistYoutubeId: string, releaseYear: number } | null, latestAlbum?: { __typename?: 'Album', name: string, youtubePlaylistId: string, artistYoutubeId: string, releaseYear: number } | null } | null> | null };
 
+export type QueryAlbumQueryVariables = Exact<{
+  playlistId: Scalars['String'];
+}>;
+
+
+export type QueryAlbumQuery = { __typename?: 'Query', queryAlbum?: { __typename?: 'BigAlbumView', album: { __typename?: 'Album', youtubePlaylistId: string, name: string, artistYoutubeId: string, releaseYear: number }, artist: { __typename?: 'Artist', youtubeId: string, name: string }, downloadRecordViews: Array<{ __typename?: 'DownloadRecordView', downloadRecord: { __typename?: 'DownloadRecord', startTime: any, youtubePlaylistId: string, endTime?: any | null, backgroundProcessId: number, downloadLocationSubpath: string, downloadLocationFilePath: string }, downloadLocation: { __typename?: 'DownloadLocation', displayName: string, filePath: string } }> } | null };
+
 export type QueryArtistQueryVariables = Exact<{
   youtubeId: Scalars['String'];
 }>;
 
 
-export type QueryArtistQuery = { __typename?: 'Query', queryArtist?: { __typename?: 'BigArtistView', artist: { __typename?: 'Artist', youtubeId: string, name: string }, albumViews: Array<{ __typename?: 'AlbumView', album: { __typename?: 'Album', name: string, youtubePlaylistId: string, artistYoutubeId: string, releaseYear: number } }> } | null };
+export type QueryArtistQuery = { __typename?: 'Query', queryArtist?: { __typename?: 'BigArtistView', artist: { __typename?: 'Artist', youtubeId: string, name: string }, albumViews: Array<{ __typename?: 'NestedAlbumView', album: { __typename?: 'Album', name: string, youtubePlaylistId: string, artistYoutubeId: string, releaseYear: number } }> } | null };
 
 export type QueryDownloadLocationsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -190,6 +237,14 @@ export type SetDefaultDownloadLocationMutationVariables = Exact<{
 
 
 export type SetDefaultDownloadLocationMutation = { __typename?: 'Mutation', setDefaultDownloadLocation: boolean };
+
+export type StartDownloadMutationVariables = Exact<{
+  playlistId: Scalars['String'];
+  downloadLocationFilePath: Scalars['String'];
+}>;
+
+
+export type StartDownloadMutation = { __typename?: 'Mutation', startDownload: boolean };
 
 export type UpdateDisplayNameMutationVariables = Exact<{
   filePath: Scalars['String'];
@@ -314,6 +369,50 @@ export const useListArtistsQuery = <
       fetcher<ListArtistsQuery, ListArtistsQueryVariables>(client, ListArtistsDocument, variables, headers),
       options
     );
+export const QueryAlbumDocument = `
+    query queryAlbum($playlistId: String!) {
+  queryAlbum(playlistId: $playlistId) {
+    album {
+      youtubePlaylistId
+      name
+      artistYoutubeId
+      releaseYear
+    }
+    artist {
+      youtubeId
+      name
+    }
+    downloadRecordViews {
+      downloadRecord {
+        startTime
+        youtubePlaylistId
+        endTime
+        backgroundProcessId
+        downloadLocationSubpath
+        downloadLocationFilePath
+      }
+      downloadLocation {
+        displayName
+        filePath
+      }
+    }
+  }
+}
+    `;
+export const useQueryAlbumQuery = <
+      TData = QueryAlbumQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables: QueryAlbumQueryVariables,
+      options?: UseQueryOptions<QueryAlbumQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<QueryAlbumQuery, TError, TData>(
+      ['queryAlbum', variables],
+      fetcher<QueryAlbumQuery, QueryAlbumQueryVariables>(client, QueryAlbumDocument, variables, headers),
+      options
+    );
 export const QueryArtistDocument = `
     query queryArtist($youtubeId: String!) {
   queryArtist(youtubeId: $youtubeId) {
@@ -387,6 +486,27 @@ export const useSetDefaultDownloadLocationMutation = <
     useMutation<SetDefaultDownloadLocationMutation, TError, SetDefaultDownloadLocationMutationVariables, TContext>(
       ['setDefaultDownloadLocation'],
       (variables?: SetDefaultDownloadLocationMutationVariables) => fetcher<SetDefaultDownloadLocationMutation, SetDefaultDownloadLocationMutationVariables>(client, SetDefaultDownloadLocationDocument, variables, headers)(),
+      options
+    );
+export const StartDownloadDocument = `
+    mutation startDownload($playlistId: String!, $downloadLocationFilePath: String!) {
+  startDownload(
+    playlistId: $playlistId
+    downloadLocationFilePath: $downloadLocationFilePath
+  )
+}
+    `;
+export const useStartDownloadMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<StartDownloadMutation, TError, StartDownloadMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<StartDownloadMutation, TError, StartDownloadMutationVariables, TContext>(
+      ['startDownload'],
+      (variables?: StartDownloadMutationVariables) => fetcher<StartDownloadMutation, StartDownloadMutationVariables>(client, StartDownloadDocument, variables, headers)(),
       options
     );
 export const UpdateDisplayNameDocument = `

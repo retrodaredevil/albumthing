@@ -7,6 +7,8 @@ import About from "./pages/About";
 import NewArtist from "./pages/NewArtist";
 import NewAlbum from "./pages/NewAlbum";
 import Settings from "./pages/Settings";
+import Album from "./pages/Album";
+import DownloadAlbum from "./pages/DownloadAlbum";
 
 function App() {
   // Tutorial followed for routing: https://blog.logrocket.com/react-router-v6/
@@ -32,6 +34,9 @@ function App() {
             <Route path="/artist/new" element={<NewArtist />} />
             <Route path="/artist/:youtubeId" element={<Artist />} />
             <Route path="/artist/:youtubeId/new" element={<NewAlbum />} />
+            <Route path="/album/:playlistId" element={<Album />} />
+            <Route path="/album/:playlistId/download" element={<DownloadAlbum />} />
+            {/*<Route path="/album/:playlistId/artist" element={<Album />} /> TODO make this redirect to /artist/:youtubeId*/}
           </Routes>
         </header>
       </div>

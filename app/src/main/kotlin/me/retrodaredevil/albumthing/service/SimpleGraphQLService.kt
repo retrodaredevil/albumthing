@@ -9,8 +9,11 @@ import me.retrodaredevil.albumthing.repository.AlbumRepository
 import me.retrodaredevil.albumthing.repository.ArtistRepository
 import me.retrodaredevil.albumthing.repository.DownloadLocationRepository
 import me.retrodaredevil.albumthing.view.ArtistView
+import me.retrodaredevil.albumthing.view.BigAlbumView
 import me.retrodaredevil.albumthing.view.BigArtistView
 import me.retrodaredevil.albumthing.view.DownloadLocationView
+import java.nio.file.Paths
+import java.time.Instant
 
 class SimpleGraphQLService(
         private val artistRepository: ArtistRepository,
@@ -30,6 +33,11 @@ class SimpleGraphQLService(
     @GraphQLQuery
     fun queryArtist(youtubeId: String): BigArtistView {
         return artistRepository.queryArtist(youtubeId)
+    }
+
+    @GraphQLQuery
+    fun queryAlbum(playlistId: String): BigAlbumView {
+        return albumRepository.queryAlbum(playlistId)
     }
 
 
@@ -69,5 +77,15 @@ class SimpleGraphQLService(
     @GraphQLMutation
     fun deleteDownloadLocation(filePath: String) {
         downloadLocationRepository.deleteDownloadLocation(filePath)
+    }
+
+    @GraphQLMutation
+    fun startDownload(playlistId: String, downloadLocationFilePath: String) {
+        val startTime = Instant.now()
+        val albumView = queryAlbum(playlistId)
+        val subpath = Paths.get(albumView.artist.name, albumView.album.name).toString()
+        val backgroundProcessId = 0 // TODO make this useful
+
+        albumRepository.createDownloadRecord(startTime, playlistId, backgroundProcessId, downloadLocationFilePath, subpath)
     }
 }

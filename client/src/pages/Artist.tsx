@@ -25,7 +25,7 @@ function Artist() {
         {isSuccess && <>
           {data!.queryArtist!.albumViews.map((albumView: any) =>
             <tr>
-              <th>{albumView.album.name}</th>
+              <th><Link to={"/album/" + albumView.album.youtubePlaylistId}>{albumView.album.name}</Link></th>
               <th>{albumView.album.releaseYear}</th>
             </tr>
           )}

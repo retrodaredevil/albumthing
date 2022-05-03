@@ -1,0 +1,3 @@
+mutation startDownload($playlistId: String!, $downloadLocationFilePath: String!){
+  startDownload(playlistId: $playlistId, downloadLocationFilePath: $downloadLocationFilePath)
+}
