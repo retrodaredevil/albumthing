@@ -4,13 +4,11 @@ import {Link } from "react-router-dom";
 // import {useListArtists} from "../useRequest";
 import {useListArtistsQuery} from "../generated/graphql";
 import {graphQLClient} from "../client";
+import Popup from "reactjs-popup";
 
 function Home() {
   const stuff = useListArtistsQuery(graphQLClient);
-  console.log(stuff);
   const { data, error, isLoading, isSuccess } = stuff;
-  console.log(data);
-  console.log();
 
   if (error) return <h1>Something went wrong!</h1>;
   return (

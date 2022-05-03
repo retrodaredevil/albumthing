@@ -1,5 +1,5 @@
 import React from "react";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {useQueryArtistQuery} from "../generated/graphql";
 import {graphQLClient} from "../client";
 
@@ -9,12 +9,18 @@ function Artist() {
   console.log(youtubeId);
   return (
     <div className="App">
-      {isLoading && "Loading"}
-      {isSuccess && data!.queryArtist!.artist.name}
       <table style={{width: "1500px"}}>
         <tr>
-          <th>Album</th>
-          <th>Year</th>
+          <th>
+            {isSuccess ? data!.queryArtist!.artist.name : "Loading"}
+          </th>
+          <th>
+            <Link to={"./new"}>Add Album</Link>
+          </th>
+        </tr>
+        <tr>
+          <th>.</th>
+          <th>.</th>
         </tr>
         {isSuccess && <>
           {data!.queryArtist!.albumViews.map((albumView: any) =>
