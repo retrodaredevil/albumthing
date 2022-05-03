@@ -8,6 +8,7 @@ import io.leangen.graphql.metadata.strategy.query.ResolverBuilder
 import io.leangen.graphql.metadata.strategy.value.jackson.JacksonValueMapperFactory
 import me.retrodaredevil.albumthing.repository.AlbumRepository
 import me.retrodaredevil.albumthing.repository.ArtistRepository
+import me.retrodaredevil.albumthing.repository.DownloadLocationRepository
 import me.retrodaredevil.albumthing.service.SimpleGraphQLService
 import me.retrodaredevil.albumthing.util.KotlinNullableTypeMapper
 import org.springframework.context.annotation.Bean
@@ -20,6 +21,7 @@ class GraphQLProvider(
 //        private val jdbcTemplate: NamedParameterJdbcTemplate
         private val artistRepository: ArtistRepository,
         private val albumRepository: AlbumRepository,
+        private val downloadLocationRepository: DownloadLocationRepository,
 ) {
     private lateinit var graphQL: GraphQL
 
@@ -36,7 +38,7 @@ class GraphQLProvider(
 
         val schemaGenerator = GraphQLSchemaGenerator()
                 .withBasePackages("me.retrodaredevil.albumthing")
-                .withOperationsFromSingleton(SimpleGraphQLService(artistRepository, albumRepository))
+                .withOperationsFromSingleton(SimpleGraphQLService(artistRepository, albumRepository, downloadLocationRepository))
                 .withValueMapperFactory(jacksonValueMapperFactory)
                 .withTypeMappers(KotlinNullableTypeMapper())
                 .withResolverBuilders(resolverBuilder)

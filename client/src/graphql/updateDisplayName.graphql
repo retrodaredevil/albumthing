@@ -1,0 +1,3 @@
+mutation updateDisplayName($filePath: String!, $displayName: String!){
+  updateDisplayName(filePath: $filePath, displayName: $displayName)
+}

@@ -1,0 +1,9 @@
+query queryDownloadLocations {
+  queryDownloadLocations {
+    defaultDownloadLocationFilePath
+    downloadLocations {
+      filePath
+      displayName
+    }
+  }
+}

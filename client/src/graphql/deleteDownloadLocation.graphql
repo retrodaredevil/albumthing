@@ -1,0 +1,3 @@
+mutation deleteDownloadLocation($filePath: String!){
+  deleteDownloadLocation(filePath: $filePath)
+}

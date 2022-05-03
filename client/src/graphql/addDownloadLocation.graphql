@@ -1,0 +1,3 @@
+mutation addDownloadLocation($filePath: String!, $displayName: String!){
+  addDownloadLocation(filePath: $filePath, displayName: $displayName)
+}

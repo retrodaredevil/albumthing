@@ -39,7 +39,8 @@ function NewAlbum() {
           const name = nameInput.current!.value;
           const releaseYearString = releaseYearInput.current!.value;
           const releaseYear = parseInt(releaseYearString);
-          if (isNaN(releaseYear)) {
+          const currentYear = new Date().getFullYear();
+          if (isNaN(releaseYear) || releaseYear < 1000 || releaseYear > currentYear + 2) {
             alert("Invalid release year!");
             return;
           }

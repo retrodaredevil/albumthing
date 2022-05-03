@@ -6,6 +6,7 @@ import Artist from "./pages/Artist";
 import About from "./pages/About";
 import NewArtist from "./pages/NewArtist";
 import NewAlbum from "./pages/NewAlbum";
+import Settings from "./pages/Settings";
 
 function App() {
   // Tutorial followed for routing: https://blog.logrocket.com/react-router-v6/
@@ -21,10 +22,13 @@ function App() {
             <Link to={"/about"}>About</Link>
             <br/>
             <Link to={"/artist/new"}>New Artist</Link>
+            <br/>
+            <Link to={"/settings"}>Settings</Link>
           </p>
           <Routes>
             <Route path='/' element={<Home/>}/>
             <Route path='/about' element={<About/>}/>
+            <Route path='/settings' element={<Settings/>}/>
             <Route path="/artist/new" element={<NewArtist />} />
             <Route path="/artist/:youtubeId" element={<Artist />} />
             <Route path="/artist/:youtubeId/new" element={<NewAlbum />} />
