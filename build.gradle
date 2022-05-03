@@ -54,7 +54,7 @@ subprojects {
             languageVersion = "1.5"
             jvmTarget = "11"
             // jsr305 gives nullable/nonnull support for Java code annotated with javax stuff
-            freeCompilerArgs += ["-Xjsr305=strict"]
+            freeCompilerArgs += ["-Xjsr305=strict", "-Xemit-jvm-type-annotations"]
         }
     }
     [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'

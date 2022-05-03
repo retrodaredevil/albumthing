@@ -9,14 +9,14 @@ function Artist() {
   return (
     <div className="App">
       {isLoading && "Loading"}
-      {isSuccess && data!.queryArtist!.artist!.name}
+      {isSuccess && data!.queryArtist!.artist.name}
       <table style={{width: "1500px"}}>
         <tr>
           <th>Album</th>
           <th>Year</th>
         </tr>
         {isSuccess && <>
-          {data!.queryArtist!.albumViews!.map((albumView: any) =>
+          {data!.queryArtist!.albumViews.map((albumView: any) =>
             <tr>
               <th>{albumView.album.name}</th>
               <th>{albumView.album.releaseYear}</th>

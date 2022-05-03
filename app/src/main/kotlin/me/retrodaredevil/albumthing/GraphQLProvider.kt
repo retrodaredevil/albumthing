@@ -9,6 +9,7 @@ import io.leangen.graphql.metadata.strategy.value.jackson.JacksonValueMapperFact
 import me.retrodaredevil.albumthing.repository.AlbumRepository
 import me.retrodaredevil.albumthing.repository.ArtistRepository
 import me.retrodaredevil.albumthing.service.SimpleGraphQLService
+import me.retrodaredevil.albumthing.util.KotlinNullableTypeMapper
 import org.springframework.context.annotation.Bean
 import org.springframework.stereotype.Component
 import java.time.ZoneId
@@ -37,6 +38,7 @@ class GraphQLProvider(
                 .withBasePackages("me.retrodaredevil.albumthing")
                 .withOperationsFromSingleton(SimpleGraphQLService(artistRepository, albumRepository))
                 .withValueMapperFactory(jacksonValueMapperFactory)
+                .withTypeMappers(KotlinNullableTypeMapper())
                 .withResolverBuilders(resolverBuilder)
 
         graphQL = GraphQL.newGraphQL(schemaGenerator.generate()).build()

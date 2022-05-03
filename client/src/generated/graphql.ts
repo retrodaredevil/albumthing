@@ -36,35 +36,35 @@ export type Scalars = {
 
 export type Album = {
   __typename?: 'Album';
-  artistYoutubeId?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
+  artistYoutubeId: Scalars['String'];
+  name: Scalars['String'];
   releaseYear: Scalars['Int'];
-  youtubePlaylistId?: Maybe<Scalars['String']>;
+  youtubePlaylistId: Scalars['String'];
 };
 
 export type AlbumView = {
   __typename?: 'AlbumView';
-  album?: Maybe<Album>;
+  album: Album;
 };
 
 export type Artist = {
   __typename?: 'Artist';
-  name?: Maybe<Scalars['String']>;
-  youtubeId?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  youtubeId: Scalars['String'];
 };
 
 export type ArtistView = {
   __typename?: 'ArtistView';
   albumCount: Scalars['Int'];
-  artist?: Maybe<Artist>;
+  artist: Artist;
   firstAlbum?: Maybe<Album>;
   latestAlbum?: Maybe<Album>;
 };
 
 export type BigArtistView = {
   __typename?: 'BigArtistView';
-  albumViews?: Maybe<Array<Maybe<AlbumView>>>;
-  artist?: Maybe<Artist>;
+  albumViews: Array<AlbumView>;
+  artist: Artist;
 };
 
 /** Mutation root */
@@ -107,14 +107,14 @@ export type QueryQueryArtistArgs = {
 export type ListArtistsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ListArtistsQuery = { __typename?: 'Query', listArtists?: Array<{ __typename?: 'ArtistView', albumCount: number, artist?: { __typename?: 'Artist', youtubeId?: string | null, name?: string | null } | null, firstAlbum?: { __typename?: 'Album', name?: string | null, youtubePlaylistId?: string | null, artistYoutubeId?: string | null, releaseYear: number } | null, latestAlbum?: { __typename?: 'Album', name?: string | null, youtubePlaylistId?: string | null, artistYoutubeId?: string | null, releaseYear: number } | null } | null> | null };
+export type ListArtistsQuery = { __typename?: 'Query', listArtists?: Array<{ __typename?: 'ArtistView', albumCount: number, artist: { __typename?: 'Artist', youtubeId: string, name: string }, firstAlbum?: { __typename?: 'Album', name: string, youtubePlaylistId: string, artistYoutubeId: string, releaseYear: number } | null, latestAlbum?: { __typename?: 'Album', name: string, youtubePlaylistId: string, artistYoutubeId: string, releaseYear: number } | null } | null> | null };
 
 export type QueryArtistQueryVariables = Exact<{
   youtubeId: Scalars['String'];
 }>;
 
 
-export type QueryArtistQuery = { __typename?: 'Query', queryArtist?: { __typename?: 'BigArtistView', artist?: { __typename?: 'Artist', youtubeId?: string | null, name?: string | null } | null, albumViews?: Array<{ __typename?: 'AlbumView', album?: { __typename?: 'Album', name?: string | null, youtubePlaylistId?: string | null, artistYoutubeId?: string | null, releaseYear: number } | null } | null> | null } | null };
+export type QueryArtistQuery = { __typename?: 'Query', queryArtist?: { __typename?: 'BigArtistView', artist: { __typename?: 'Artist', youtubeId: string, name: string }, albumViews: Array<{ __typename?: 'AlbumView', album: { __typename?: 'Album', name: string, youtubePlaylistId: string, artistYoutubeId: string, releaseYear: number } }> } | null };
 
 
 export const ListArtistsDocument = `
