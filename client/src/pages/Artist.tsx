@@ -1,10 +1,11 @@
 import React from "react";
 import {useParams} from "react-router-dom";
 import {useQueryArtistQuery} from "../generated/graphql";
+import {graphQLClient} from "../client";
 
 function Artist() {
   const { youtubeId } = useParams();
-  const {data, error, isLoading, isSuccess} = useQueryArtistQuery({youtubeId: youtubeId ?? ""});
+  const {data, error, isLoading, isSuccess} = useQueryArtistQuery(graphQLClient, {youtubeId: youtubeId ?? ""});
   console.log(youtubeId);
   return (
     <div className="App">

@@ -3,9 +3,14 @@ import React from "react";
 import {Link } from "react-router-dom";
 // import {useListArtists} from "../useRequest";
 import {useListArtistsQuery} from "../generated/graphql";
+import {graphQLClient} from "../client";
 
 function Home() {
-  const { data, error, isLoading, isSuccess } = useListArtistsQuery();
+  const stuff = useListArtistsQuery(graphQLClient);
+  console.log(stuff);
+  const { data, error, isLoading, isSuccess } = stuff;
+  console.log(data);
+  console.log();
 
   if (error) return <h1>Something went wrong!</h1>;
   return (

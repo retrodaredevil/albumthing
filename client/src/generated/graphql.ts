@@ -1,3 +1,5 @@
+import { GraphQLClient } from 'graphql-request';
+import { RequestInit } from 'graphql-request/dist/types.dom';
 import { useQuery, UseQueryOptions } from 'react-query';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -5,23 +7,8 @@ export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K]
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 
-function fetcher<TData, TVariables>(query: string, variables?: TVariables) {
-  return async (): Promise<TData> => {
-    const res = await fetch("http://localhost:8080/graphql", {
-    method: "POST",
-      body: JSON.stringify({ query, variables }),
-    });
-
-    const json = await res.json();
-
-    if (json.errors) {
-      const { message } = json.errors[0];
-
-      throw new Error(message);
-    }
-
-    return json.data;
-  }
+function fetcher<TData, TVariables>(client: GraphQLClient, query: string, variables?: TVariables, headers?: RequestInit['headers']) {
+  return async (): Promise<TData> => client.request<TData, TVariables>(query, variables, headers);
 }
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -144,12 +131,14 @@ export const useListArtistsQuery = <
       TData = ListArtistsQuery,
       TError = unknown
     >(
+      client: GraphQLClient,
       variables?: ListArtistsQueryVariables,
-      options?: UseQueryOptions<ListArtistsQuery, TError, TData>
+      options?: UseQueryOptions<ListArtistsQuery, TError, TData>,
+      headers?: RequestInit['headers']
     ) =>
     useQuery<ListArtistsQuery, TError, TData>(
       variables === undefined ? ['listArtists'] : ['listArtists', variables],
-      fetcher<ListArtistsQuery, ListArtistsQueryVariables>(ListArtistsDocument, variables),
+      fetcher<ListArtistsQuery, ListArtistsQueryVariables>(client, ListArtistsDocument, variables, headers),
       options
     );
 export const QueryArtistDocument = `
@@ -174,11 +163,13 @@ export const useQueryArtistQuery = <
       TData = QueryArtistQuery,
       TError = unknown
     >(
+      client: GraphQLClient,
       variables: QueryArtistQueryVariables,
-      options?: UseQueryOptions<QueryArtistQuery, TError, TData>
+      options?: UseQueryOptions<QueryArtistQuery, TError, TData>,
+      headers?: RequestInit['headers']
     ) =>
     useQuery<QueryArtistQuery, TError, TData>(
       ['queryArtist', variables],
-      fetcher<QueryArtistQuery, QueryArtistQueryVariables>(QueryArtistDocument, variables),
+      fetcher<QueryArtistQuery, QueryArtistQueryVariables>(client, QueryArtistDocument, variables, headers),
       options
     );
