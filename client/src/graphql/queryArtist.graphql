@@ -1,0 +1,16 @@
+query queryArtist($youtubeId: String!) {
+  queryArtist(youtubeId: $youtubeId) {
+    artist {
+      youtubeId
+      name
+    }
+    albumViews {
+      album {
+        name
+        youtubePlaylistId
+        artistYoutubeId
+        releaseYear
+      }
+    }
+  }
+}

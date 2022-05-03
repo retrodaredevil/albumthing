@@ -1,12 +1,13 @@
-import {useListArtists} from "../useRequest";
+// import {useListArtists} from "../useRequest";
 import React from "react";
 import {Link } from "react-router-dom";
+// import {useListArtists} from "../useRequest";
+import {useListArtistsQuery} from "../generated/graphql";
 
 function Home() {
-  const { data, error, isLoading, isSuccess } = useListArtists();
+  const { data, error, isLoading, isSuccess } = useListArtistsQuery();
 
-  if (error) return <h1><Link to={"/artist/hi"}>Something went wrong!</Link></h1>;
-  console.log(data);
+  if (error) return <h1>Something went wrong!</h1>;
   return (
     <div className="App">
       <table style={{width: "1500px"}}>
@@ -22,7 +23,7 @@ function Home() {
           <th>Loading</th>
           <th>Loading</th>
         </tr>}
-        {isSuccess && data.map((artistView: any) => <>
+        {isSuccess && data!.listArtists!.map((artistView: any) => <>
           <tr>
             <th>
               <Link to={"/artist/" + artistView.artist.youtubeId}>

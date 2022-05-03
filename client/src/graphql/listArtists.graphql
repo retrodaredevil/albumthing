@@ -1,0 +1,21 @@
+query listArtists {
+  listArtists {
+    artist {
+      youtubeId
+      name
+    }
+    albumCount
+    firstAlbum {
+      name
+      youtubePlaylistId
+      artistYoutubeId
+      releaseYear
+    }
+    latestAlbum {
+      name
+      youtubePlaylistId
+      artistYoutubeId
+      releaseYear
+    }
+  }
+}
