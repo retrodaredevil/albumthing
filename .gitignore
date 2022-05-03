@@ -2,7 +2,7 @@
 *.attach_pid*
 .~lock*
 *.log.gz
-db-data/
+db-data*/
 
 # Created by https://www.toptal.com/developers/gitignore/api/java,linux,macos,gradle,kotlin,windows,intellij,react,node,yarn
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,linux,macos,gradle,kotlin,windows,intellij,react,node,yarn

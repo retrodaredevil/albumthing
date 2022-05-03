@@ -104,6 +104,8 @@ function Settings() {
             <th><label htmlFor={downloadLocation.filePath}>{downloadLocation.filePath}</label></th>
             <th>
               <input
+                // Need key= so it works correctly. Thanks https://stackoverflow.com/a/43642421/5434860
+                key={downloadLocation.filePath + "_display_name_input"}
                 defaultValue={downloadLocation.displayName}
                 onBlur={(event) => {
                   const desiredDisplayName = event.target.value;
@@ -115,6 +117,9 @@ function Settings() {
                         displayName: desiredDisplayName
                       },
                       {
+                        onSuccess: () => {
+                          refetch();
+                        },
                         onError: () => {
                           alert("Failed to save new display name!");
                         }
