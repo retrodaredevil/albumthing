@@ -1,0 +1,3 @@
+mutation addAlbum($youtubePlaylistId: String!, $artistYoutubeId: String!, $name: String!, $releaseYear: Int!){
+  addAlbum(youtubePlaylistId: $youtubePlaylistId, artistYoutubeId: $artistYoutubeId, name: $name, releaseYear: $releaseYear)
+}

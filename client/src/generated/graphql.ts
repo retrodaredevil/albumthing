@@ -91,6 +91,16 @@ export type QueryQueryArtistArgs = {
   youtubeId?: InputMaybe<Scalars['String']>;
 };
 
+export type AddAlbumMutationVariables = Exact<{
+  youtubePlaylistId: Scalars['String'];
+  artistYoutubeId: Scalars['String'];
+  name: Scalars['String'];
+  releaseYear: Scalars['Int'];
+}>;
+
+
+export type AddAlbumMutation = { __typename?: 'Mutation', addAlbum: boolean };
+
 export type AddArtistMutationVariables = Exact<{
   youtubeId: Scalars['String'];
   name: Scalars['String'];
@@ -112,6 +122,29 @@ export type QueryArtistQueryVariables = Exact<{
 export type QueryArtistQuery = { __typename?: 'Query', queryArtist?: { __typename?: 'BigArtistView', artist: { __typename?: 'Artist', youtubeId: string, name: string }, albumViews: Array<{ __typename?: 'AlbumView', album: { __typename?: 'Album', name: string, youtubePlaylistId: string, artistYoutubeId: string, releaseYear: number } }> } | null };
 
 
+export const AddAlbumDocument = `
+    mutation addAlbum($youtubePlaylistId: String!, $artistYoutubeId: String!, $name: String!, $releaseYear: Int!) {
+  addAlbum(
+    youtubePlaylistId: $youtubePlaylistId
+    artistYoutubeId: $artistYoutubeId
+    name: $name
+    releaseYear: $releaseYear
+  )
+}
+    `;
+export const useAddAlbumMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<AddAlbumMutation, TError, AddAlbumMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<AddAlbumMutation, TError, AddAlbumMutationVariables, TContext>(
+      ['addAlbum'],
+      (variables?: AddAlbumMutationVariables) => fetcher<AddAlbumMutation, AddAlbumMutationVariables>(client, AddAlbumDocument, variables, headers)(),
+      options
+    );
 export const AddArtistDocument = `
     mutation addArtist($youtubeId: String!, $name: String!) {
   addArtist(youtubeId: $youtubeId, name: $name)
