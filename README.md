@@ -2,17 +2,22 @@
 A project for my CS2300 Databases class. This assists with the downloading of albums
 off of YouTube music.
 
+### Dependencies
+* Yarn
+* Java 11
+* Docker and docker-compose (or install PostgreSQL via some other means)
 
 ### Running
 In the future, running this should be automated more.
 
 First, have npm and yarn installed on your system.
 ```shell
-cd client
-yarn install
-cd ..
+# Bring up the database
+sudo docker-compose up -d
+
+# Run the web application
 ./gradlew app:bootRun  # bootRun will automatically build the client module
-# or to not repeatedly copy the web app
+# ALTERNATIVELY if you have already ran this before
 ./gradlew app:bootRun -x copyWebApp
 ```
 Navigate to [here](http://localhost:8080)
@@ -23,42 +28,3 @@ You must have this running in order to use the application. In the future, the e
 application may be packaged within docker.
 
 
-### Testing database with Python
-Although this application is written in Python, I find it useful to use Python for small database edits or queries.
-
-```shell
-python3 -m pip install psycopg2-binary  # https://pypi.org/project/psycopg2/
-```
-
-```python
-import psycopg2
-
-params = {
-    "dbname": "default_database",
-    "user": "username",
-    "password": "password",
-    "host": "localhost",
-    "port": 5432
-}
-
-# Connect to your postgres DB
-conn = psycopg2.connect(**params)
-
-# Open a cursor to perform database operations
-cur = conn.cursor()
-
-# Execute a query
-cur.execute("SELECT * FROM my_data")
-
-# Retrieve query results
-records = cur.fetchall()
-
-# Commit query changes
-conn.commit()
-
-# Rollback changes (required upon exception)
-conn.rollback()
-```
-
-Notes for myself
-* Kotlin JPA also uses additional Dto class https://blog.codecentric.de/en/2017/06/kotlin-spring-working-jpa-data-classes/

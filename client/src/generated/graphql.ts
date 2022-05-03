@@ -1,6 +1,6 @@
 import { GraphQLClient } from 'graphql-request';
 import { RequestInit } from 'graphql-request/dist/types.dom';
-import { useQuery, UseQueryOptions } from 'react-query';
+import { useMutation, useQuery, UseMutationOptions, UseQueryOptions } from 'react-query';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -91,6 +91,14 @@ export type QueryQueryArtistArgs = {
   youtubeId?: InputMaybe<Scalars['String']>;
 };
 
+export type AddArtistMutationVariables = Exact<{
+  youtubeId: Scalars['String'];
+  name: Scalars['String'];
+}>;
+
+
+export type AddArtistMutation = { __typename?: 'Mutation', addArtist: boolean };
+
 export type ListArtistsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -104,6 +112,24 @@ export type QueryArtistQueryVariables = Exact<{
 export type QueryArtistQuery = { __typename?: 'Query', queryArtist?: { __typename?: 'BigArtistView', artist: { __typename?: 'Artist', youtubeId: string, name: string }, albumViews: Array<{ __typename?: 'AlbumView', album: { __typename?: 'Album', name: string, youtubePlaylistId: string, artistYoutubeId: string, releaseYear: number } }> } | null };
 
 
+export const AddArtistDocument = `
+    mutation addArtist($youtubeId: String!, $name: String!) {
+  addArtist(youtubeId: $youtubeId, name: $name)
+}
+    `;
+export const useAddArtistMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<AddArtistMutation, TError, AddArtistMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<AddArtistMutation, TError, AddArtistMutationVariables, TContext>(
+      ['addArtist'],
+      (variables?: AddArtistMutationVariables) => fetcher<AddArtistMutation, AddArtistMutationVariables>(client, AddArtistDocument, variables, headers)(),
+      options
+    );
 export const ListArtistsDocument = `
     query listArtists {
   listArtists {

@@ -1,0 +1,3 @@
+mutation addArtist($youtubeId: String!, $name: String!){
+  addArtist(youtubeId:$youtubeId, name:$name)
+}
