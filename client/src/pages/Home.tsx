@@ -4,7 +4,6 @@ import {Link } from "react-router-dom";
 // import {useListArtists} from "../useRequest";
 import {useListArtistsQuery} from "../generated/graphql";
 import {graphQLClient} from "../client";
-import Popup from "reactjs-popup";
 
 function Home() {
   const stuff = useListArtistsQuery(graphQLClient);

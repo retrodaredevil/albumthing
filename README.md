@@ -25,6 +25,9 @@ First, have npm and yarn installed on your system.
 # Bring up the database
 sudo docker-compose up -d
 
+# Install dependencies for frontend
+(cd client && yarn install)
+
 # Run the web application
 ./gradlew app:bootRun  # bootRun will automatically build the client module
 # ALTERNATIVELY if you have already ran this before
