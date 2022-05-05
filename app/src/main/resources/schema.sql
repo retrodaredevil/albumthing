@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS artist(
 CREATE TABLE IF NOT EXISTS album(
     youtube_playlist_id VARCHAR(128) PRIMARY KEY,
     name VARCHAR(80) NOT NULL,
-    release_year INT NOT NULL,
+    release_year INT NOT NULL CHECK(release_year > 1000),
     artist_youtube_id VARCHAR(128) REFERENCES artist(youtube_id)
 );
 

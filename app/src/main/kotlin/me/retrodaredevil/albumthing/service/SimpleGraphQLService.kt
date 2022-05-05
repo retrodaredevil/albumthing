@@ -8,6 +8,10 @@ import me.retrodaredevil.albumthing.model.Artist
 import me.retrodaredevil.albumthing.repository.AlbumRepository
 import me.retrodaredevil.albumthing.repository.ArtistRepository
 import me.retrodaredevil.albumthing.repository.DownloadLocationRepository
+import me.retrodaredevil.albumthing.util.requireValidChannelId
+import me.retrodaredevil.albumthing.util.requireValidDisplayName
+import me.retrodaredevil.albumthing.util.requireValidFilePath
+import me.retrodaredevil.albumthing.util.requireValidPlaylistId
 import me.retrodaredevil.albumthing.view.ArtistView
 import me.retrodaredevil.albumthing.view.BigAlbumView
 import me.retrodaredevil.albumthing.view.BigArtistView
@@ -32,11 +36,13 @@ class SimpleGraphQLService(
 
     @GraphQLQuery
     fun queryArtist(youtubeId: String): BigArtistView {
+        requireValidChannelId(youtubeId)
         return artistRepository.queryArtist(youtubeId)
     }
 
     @GraphQLQuery
     fun queryAlbum(playlistId: String): BigAlbumView {
+        requireValidPlaylistId(playlistId)
         return albumRepository.queryAlbum(playlistId)
     }
 
@@ -44,13 +50,16 @@ class SimpleGraphQLService(
     @GraphQLMutation
     fun addArtist(youtubeId: String, name: String) {
         // TODO make name optional so we query YouTube API
-        println("Adding $youtubeId $name")
-        // TODO add validation to youtubeId and name
+        requireValidChannelId(youtubeId)
+        requireValidDisplayName(name)
         artistRepository.save(Artist(youtubeId, name))
     }
     @GraphQLMutation
     fun addAlbum(youtubePlaylistId: String, artistYoutubeId: String, name: String, releaseYear: Int) {
         // TODO make everything except youtubePlaylistId optional. All can be queried from YouTube API
+        requireValidPlaylistId(youtubePlaylistId)
+        requireValidChannelId(artistYoutubeId)
+        requireValidDisplayName(name)
         albumRepository.save(Album(youtubePlaylistId, artistYoutubeId, name, releaseYear))
     }
 
@@ -61,16 +70,20 @@ class SimpleGraphQLService(
 
     @GraphQLMutation
     fun setDefaultDownloadLocation(filePath: String) {
+        requireValidFilePath(filePath)
         downloadLocationRepository.setDefaultDownloadLocation(filePath)
     }
 
     @GraphQLMutation
     fun addDownloadLocation(filePath: String, displayName: String) {
+        requireValidFilePath(filePath)
+        requireValidDisplayName(displayName)
         downloadLocationRepository.addDownloadLocation(filePath, displayName)
     }
 
     @GraphQLMutation
     fun updateDisplayName(filePath: String, displayName: String) {
+        requireValidDisplayName(displayName)
         downloadLocationRepository.updateDisplayName(filePath, displayName)
     }
 
@@ -81,6 +94,8 @@ class SimpleGraphQLService(
 
     @GraphQLMutation
     fun startDownload(playlistId: String, downloadLocationFilePath: String) {
+        requireValidChannelId(playlistId)
+        // don't need to validate downloadLocationFilePath because it should be referring to a valid download record
         val startTime = Instant.now()
         val albumView = queryAlbum(playlistId)
         val subpath = Paths.get(albumView.artist.name, albumView.album.name).toString()
