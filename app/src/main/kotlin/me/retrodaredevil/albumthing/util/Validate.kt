@@ -2,13 +2,10 @@ package me.retrodaredevil.albumthing.util
 
 import me.retrodaredevil.albumthing.exception.ValidationException
 import java.nio.file.Paths
-import java.util.Base64
 
 
 private fun requireValidBase64(text: String) {
-    try {
-        Base64.getUrlDecoder().decode(text)
-    } catch (ex: IllegalArgumentException) {
+    if (!Regex("[a-zA-Z\\d-_]*").matches(text)) {
         throw ValidationException("Invalid base64 data! text: $text")
     }
 }
@@ -39,6 +36,9 @@ fun requireValidFilePath(filePath: String) {
     if (path.normalize() != path) {
         // Cannot have .. or . in path
         throw ValidationException("path must already be normalized! filePath: $filePath")
+    }
+    if (filePath.endsWith("/")) {
+        throw ValidationException("Cannot end with / filePath: $filePath")
     }
 }
 fun requireValidDisplayName(name: String) {
