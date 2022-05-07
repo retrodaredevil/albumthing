@@ -916,6 +916,31 @@
         "description": "Query root",
         "fields": [
           {
+            "name": "channelName",
+            "description": null,
+            "args": [
+              {
+                "name": "channelId",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "listArtists",
             "description": null,
             "args": [],

@@ -3,6 +3,7 @@
 .~lock*
 *.log.gz
 db-data*/
+**/client_secret.json
 
 # Created by https://www.toptal.com/developers/gitignore/api/java,linux,macos,gradle,kotlin,windows,intellij,react,node,yarn
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,linux,macos,gradle,kotlin,windows,intellij,react,node,yarn

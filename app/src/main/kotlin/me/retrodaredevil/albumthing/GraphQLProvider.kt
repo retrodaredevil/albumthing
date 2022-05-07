@@ -11,6 +11,7 @@ import me.retrodaredevil.albumthing.repository.ArtistRepository
 import me.retrodaredevil.albumthing.repository.DownloadLocationRepository
 import me.retrodaredevil.albumthing.service.SimpleGraphQLService
 import me.retrodaredevil.albumthing.util.KotlinNullableTypeMapper
+import me.retrodaredevil.albumthing.youtube.YoutubeService
 import org.springframework.context.annotation.Bean
 import org.springframework.stereotype.Component
 import java.time.ZoneId
@@ -22,6 +23,7 @@ class GraphQLProvider(
         private val artistRepository: ArtistRepository,
         private val albumRepository: AlbumRepository,
         private val downloadLocationRepository: DownloadLocationRepository,
+        private val youtubeService: YoutubeService,
 ) {
     private lateinit var graphQL: GraphQL
 
@@ -38,7 +40,7 @@ class GraphQLProvider(
 
         val schemaGenerator = GraphQLSchemaGenerator()
                 .withBasePackages("me.retrodaredevil.albumthing")
-                .withOperationsFromSingleton(SimpleGraphQLService(artistRepository, albumRepository, downloadLocationRepository))
+                .withOperationsFromSingleton(SimpleGraphQLService(artistRepository, albumRepository, downloadLocationRepository, youtubeService))
                 .withValueMapperFactory(jacksonValueMapperFactory)
                 .withTypeMappers(KotlinNullableTypeMapper())
                 .withResolverBuilders(resolverBuilder)

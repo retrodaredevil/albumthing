@@ -155,11 +155,18 @@ export type NestedAlbumView = {
 /** Query root */
 export type Query = {
   __typename?: 'Query';
+  channelName?: Maybe<Scalars['String']>;
   listArtists?: Maybe<Array<Maybe<ArtistView>>>;
   queryAlbum?: Maybe<BigAlbumView>;
   queryArtist?: Maybe<BigArtistView>;
   queryDownloadLocations?: Maybe<DownloadLocationView>;
   queryMilli: Scalars['Int'];
+};
+
+
+/** Query root */
+export type QueryChannelNameArgs = {
+  channelId?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -186,7 +193,7 @@ export type AddAlbumMutation = { __typename?: 'Mutation', addAlbum: boolean };
 
 export type AddArtistMutationVariables = Exact<{
   youtubeId: Scalars['String'];
-  name: Scalars['String'];
+  name?: InputMaybe<Scalars['String']>;
 }>;
 
 
@@ -279,7 +286,7 @@ export const useAddAlbumMutation = <
       options
     );
 export const AddArtistDocument = `
-    mutation addArtist($youtubeId: String!, $name: String!) {
+    mutation addArtist($youtubeId: String!, $name: String) {
   addArtist(youtubeId: $youtubeId, name: $name)
 }
     `;

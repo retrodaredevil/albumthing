@@ -16,6 +16,7 @@ import me.retrodaredevil.albumthing.view.ArtistView
 import me.retrodaredevil.albumthing.view.BigAlbumView
 import me.retrodaredevil.albumthing.view.BigArtistView
 import me.retrodaredevil.albumthing.view.DownloadLocationView
+import me.retrodaredevil.albumthing.youtube.YoutubeService
 import java.nio.file.Paths
 import java.time.Instant
 
@@ -23,6 +24,7 @@ class SimpleGraphQLService(
         private val artistRepository: ArtistRepository,
         private val albumRepository: AlbumRepository,
         private val downloadLocationRepository: DownloadLocationRepository,
+        private val youtubeService: YoutubeService,
 ) {
 
     @GraphQLQuery
@@ -48,11 +50,15 @@ class SimpleGraphQLService(
 
 
     @GraphQLMutation
-    fun addArtist(youtubeId: String, name: String) {
-        // TODO make name optional so we query YouTube API
+    fun addArtist(youtubeId: String, name: String?) {
         requireValidChannelId(youtubeId)
-        requireValidDisplayName(name)
-        artistRepository.save(Artist(youtubeId, name))
+        val actualName: String = if (name != null) {
+            requireValidDisplayName(name)
+            name
+        } else {
+            youtubeService.getChannelName(youtubeId)
+        }
+        artistRepository.save(Artist(youtubeId, actualName))
     }
     @GraphQLMutation
     fun addAlbum(youtubePlaylistId: String, artistYoutubeId: String, name: String, releaseYear: Int) {
@@ -102,5 +108,10 @@ class SimpleGraphQLService(
         val backgroundProcessId = 0 // TODO make this useful
 
         albumRepository.createDownloadRecord(startTime, playlistId, backgroundProcessId, downloadLocationFilePath, subpath)
+    }
+
+    @GraphQLQuery
+    fun getChannelName(channelId: String): String {
+        return youtubeService.getChannelName(channelId)
     }
 }

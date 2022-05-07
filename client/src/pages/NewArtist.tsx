@@ -24,7 +24,7 @@ function NewArtist() {
             return;
           }
           const youtubeId = youtubeIdInput.current!.value;
-          const name = nameInput.current!.value;
+          const name = nameInput.current!.value || undefined; // if empty string, default to undefined, which will give null to backend to use default
           mutation.mutate(
             {
               youtubeId: youtubeId,

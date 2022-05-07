@@ -31,6 +31,18 @@ dependencies {
     // https://github.com/leangen/graphql-spqr/releases
     implementation 'io.leangen.graphql:spqr:0.11.2'
 
+
+    // region YouTube API
+    // Dependencies from https://developers.google.com/api-client-library/java/google-oauth-java-client/setup
+    implementation 'com.google.auth:google-auth-library-oauth2-http:1.6.0'
+    implementation 'com.google.oauth-client:google-oauth-client-jetty:1.33.2'
+    implementation 'com.google.oauth-client:google-oauth-client-java6:1.33.3'
+    // https://mvnrepository.com/artifact/com.google.oauth-client/google-oauth-client
+    implementation group: 'com.google.oauth-client', name: 'google-oauth-client', version: '1.33.3'
+    // javadoc: https://googleapis.dev/java/google-api-services-youtube/latest/index.html
+    implementation 'com.google.apis:google-api-services-youtube:v3-rev20220418-1.32.1'
+    // endregion
+
     implementation project(":core")
     runtimeOnly project(":client")
 }
