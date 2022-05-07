@@ -12,6 +12,8 @@ import com.google.auth.oauth2.GoogleCredentials
 import org.springframework.stereotype.Service
 import java.io.*
 import java.security.GeneralSecurityException
+import java.time.Instant
+import java.time.ZoneId
 
 
 @Service("youtubeService")
@@ -68,5 +70,18 @@ class YoutubeService {
             throw IllegalStateException("Got a title we don't know how to handle! title: $title")
         }
         return title.substring(0, title.length - " - Topic".length)
+    }
+
+    fun getPlaylistName(playlistId: String): String {
+        val request = getService().playlists().list(listOf("snippet")).setId(listOf(playlistId))
+        val response = request.execute()!!
+        val playlist = response.items.first { it.id == playlistId }
+        println(playlist.snippet)
+//        val releaseYear = Instant.ofEpochMilli(playlist.snippet.publishedAt.value).atZone(ZoneId.systemDefault()).year
+        val title = playlist.snippet.title
+        if (!title.startsWith("Album - ")) {
+            throw IllegalStateException("got a title we don't know how to handle! title: $title")
+        }
+        return title.substring("Album - ".length)
     }
 }

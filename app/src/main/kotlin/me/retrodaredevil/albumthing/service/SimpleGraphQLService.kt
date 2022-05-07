@@ -114,4 +114,8 @@ class SimpleGraphQLService(
     fun getChannelName(channelId: String): String {
         return youtubeService.getChannelName(channelId)
     }
+    @GraphQLQuery
+    fun getPlaylistName(playlistId: String): String {
+        return youtubeService.getPlaylistName(playlistId)
+    }
 }
